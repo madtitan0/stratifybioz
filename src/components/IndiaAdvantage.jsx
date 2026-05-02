@@ -66,8 +66,8 @@ export default function IndiaAdvantage() {
           {/* Right: image with overlay CTA */}
           <div className={`reveal reveal-right ${vis ? 'in' : ''} relative rounded-2xl overflow-hidden img-zoom`}
                style={{ border: '1px solid rgba(255,255,255,0.07)', height: '420px' }}>
-            <img src="https://images.unsplash.com/photo-1628595351029-074b3f5b6ec6?w=700&auto=format&fit=crop&q=80"
-                 alt="Clinical research in India"
+            <img src="https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=700&auto=format&fit=crop&q=80"
+                 alt="India clinical research infrastructure"
                  className="w-full h-full object-cover"
                  onError={e => { e.target.parentElement.style.background='linear-gradient(135deg,#0C1228,#0D2045)'; e.target.style.display='none'; }} />
             <div className="absolute inset-0"

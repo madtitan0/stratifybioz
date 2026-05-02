@@ -19,13 +19,13 @@ const STEPS = [
     n: '03', color: '#00FF88', title: 'Site Selection & Initiation',
     preview: 'Pan-India network evaluation, protocol training, and ethics submissions.',
     desc: 'Drawing on our extensive pan-India site network, we evaluate, select, and initiate sites — complete protocol training, ethics committee submissions, and investigator briefings included.',
-    img: 'https://images.unsplash.com/photo-1519494026892-476f08a9b7c4?w=600&auto=format&fit=crop&q=80',
+    img: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80',
   },
   {
     n: '04', color: '#F59E0B', title: 'Execution & Monitoring',
     preview: 'Risk-based monitoring with real-time data quality and safety tracking.',
     desc: 'Centralized, risk-based monitoring ensures real-time data quality and patient safety. Our coordinators manage enrollment, adverse event reporting, and protocol compliance on an ongoing basis.',
-    img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&auto=format&fit=crop&q=80',
+    img: 'https://images.unsplash.com/photo-1626863905121-3b0c0ed7b94c?w=600&auto=format&fit=crop&q=80',
   },
   {
     n: '05', color: '#A78BFA', title: 'Data Analysis & Reporting',

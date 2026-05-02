@@ -1,6 +1,22 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 import { useScrollReveal } from '../hooks/useScrollReveal';
-import { MapPin, Phone, ArrowRight, CheckCircle } from 'lucide-react';
+import { MapPin, Phone, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
+
+// ─────────────────────────────────────────────────────────────
+// EmailJS setup — free at https://emailjs.com (200 emails/month)
+//
+// Steps:
+//  1. Sign up at emailjs.com
+//  2. Add Email Service (Gmail / Outlook) → copy Service ID
+//  3. Create Email Template → copy Template ID
+//     Template variables used: {{from_name}}, {{from_email}},
+//     {{organisation}}, {{phone}}, {{service}}, {{message}}
+//  4. Go to Account → copy Public Key
+// ─────────────────────────────────────────────────────────────
+const EJS_SERVICE  = 'YOUR_SERVICE_ID';   // e.g. 'service_abc123'
+const EJS_TEMPLATE = 'YOUR_TEMPLATE_ID';  // e.g. 'template_xyz456'
+const EJS_KEY      = 'YOUR_PUBLIC_KEY';   // e.g. 'abcDEFghiJKL'
 
 const SERVICES = [
   'Clinical Operations', 'Site Management Services', 'Data Management',
@@ -23,13 +39,24 @@ const inputCls = `w-full bg-white/3 border border-white/8 text-bz-text placehold
 
 export default function Contact() {
   const [ref, vis] = useScrollReveal();
-  const [sent, setSent]     = useState(false);
-  const [busy, setBusy]     = useState(false);
+  const [sent, setSent]   = useState(false);
+  const [busy, setBusy]   = useState(false);
+  const [error, setError] = useState('');
+  const formRef           = useRef(null);
 
-  const submit = e => {
+  const submit = async e => {
     e.preventDefault();
     setBusy(true);
-    setTimeout(() => { setBusy(false); setSent(true); }, 1600);
+    setError('');
+    try {
+      await emailjs.sendForm(EJS_SERVICE, EJS_TEMPLATE, formRef.current, EJS_KEY);
+      setSent(true);
+    } catch (err) {
+      setError('Failed to send. Please email us at info@stratifybioz.com or call 044-45853891.');
+      console.error(err);
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
@@ -112,37 +139,46 @@ export default function Contact() {
                        style={{ background: 'rgba(0,255,136,0.1)', border: '1px solid rgba(0,255,136,0.25)' }}>
                     <CheckCircle className="w-8 h-8" style={{ color: '#00FF88' }} />
                   </div>
-                  <h3 className="font-display font-bold text-white text-xl mb-2">Message Sent</h3>
+                  <h3 className="font-display font-bold text-white text-xl mb-2">Message Sent!</h3>
                   <p className="text-bz-muted text-sm max-w-xs">Our team will respond within one business day.</p>
                 </div>
               ) : (
-                <form onSubmit={submit} className="space-y-5">
+                <form ref={formRef} onSubmit={submit} className="space-y-5">
                   <div className="grid sm:grid-cols-2 gap-5">
                     <Field label="Full Name" req>
-                      <input type="text" required placeholder="Dr. Jane Smith" className={`${inputCls} h-11`} />
+                      <input name="from_name" type="text" required placeholder="Dr. Jane Smith" className={`${inputCls} h-11`} />
                     </Field>
                     <Field label="Email Address" req>
-                      <input type="email" required placeholder="jane@pharma.com" className={`${inputCls} h-11`} />
+                      <input name="from_email" type="email" required placeholder="jane@pharma.com" className={`${inputCls} h-11`} />
                     </Field>
                   </div>
                   <div className="grid sm:grid-cols-2 gap-5">
                     <Field label="Organisation">
-                      <input type="text" placeholder="Pharma Company Ltd." className={`${inputCls} h-11`} />
+                      <input name="organisation" type="text" placeholder="Pharma Company Ltd." className={`${inputCls} h-11`} />
                     </Field>
                     <Field label="Phone">
-                      <input type="tel" placeholder="+91 98765 43210" className={`${inputCls} h-11`} />
+                      <input name="phone" type="tel" placeholder="+91 98765 43210" className={`${inputCls} h-11`} />
                     </Field>
                   </div>
                   <Field label="Area of Interest">
-                    <select className={`${inputCls} h-11 appearance-none cursor-pointer`}>
+                    <select name="service" className={`${inputCls} h-11 appearance-none cursor-pointer`}>
                       <option value="">Select a service area...</option>
                       {SERVICES.map(s => <option key={s}>{s}</option>)}
                     </select>
                   </Field>
                   <Field label="Message" req>
-                    <textarea required rows={4} placeholder="Tell us about your clinical program, timeline, and how we can help..."
+                    <textarea name="message" required rows={4}
+                              placeholder="Tell us about your clinical program, timeline, and how we can help..."
                               className={`${inputCls} py-3 resize-none`} />
                   </Field>
+
+                  {error && (
+                    <div className="flex items-start gap-3 rounded-xl px-4 py-3 text-sm"
+                         style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', color: '#FCA5A5' }}>
+                      <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                      {error}
+                    </div>
+                  )}
 
                   <button type="submit" disabled={busy}
                           className="btn-primary w-full flex items-center justify-center gap-2 px-6 py-4 text-sm disabled:opacity-60 disabled:pointer-events-none">

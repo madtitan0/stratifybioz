@@ -23,8 +23,8 @@ const SVC = [
   },
   {
     num: '02', title: 'Site Management', color: '#8B2FFF',
-    /* Hospital corridor / clinical facility */
-    img: 'https://images.unsplash.com/photo-1519494026892-476f08a9b7c4?w=800&auto=format&fit=crop&q=80',
+    /* Clinical site — investigator & coordinator at work */
+    img: 'https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=800&auto=format&fit=crop&q=80',
     tagline: 'Operational excellence at every site',
     desc: 'Optimal site management is a key tenet of clinical trial success. We deploy dedicated Study Start-Up specialists, maintain rigorous compliance oversight, and ensure seamless communication between sponsors, investigators, and regulatory bodies.',
     bullets: [
