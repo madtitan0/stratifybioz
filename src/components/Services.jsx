@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
-import { CheckCircle2, ChevronRight } from 'lucide-react';
+import { CheckCircle2, ChevronRight, ChevronDown } from 'lucide-react';
 
 /* ─── Curated, domain-relevant images ─── */
 const SVC = [
@@ -133,6 +133,7 @@ const SVC = [
 export default function Services() {
   const [ref, vis] = useScrollReveal();
   const [active, setActive] = useState(0);
+  const [tabOpen, setTabOpen] = useState(false);
   const s = SVC[active];
 
   return (
@@ -153,8 +154,42 @@ export default function Services() {
           </h2>
         </div>
 
-        {/* Tab navigation — horizontal scroll on mobile */}
-        <div className={`reveal d2 ${vis ? 'in' : ''} flex gap-2 overflow-x-auto pb-2 mb-8 scrollbar-none`}
+        {/* ── Mobile: collapsible tab dropdown ── */}
+        <div className={`reveal d2 ${vis ? 'in' : ''} md:hidden mb-6`}>
+          <button onClick={() => setTabOpen(o => !o)}
+                  className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl"
+                  style={{ background: `${s.color}12`, border: `1px solid ${s.color}28` }}>
+            <div className="flex items-center gap-2.5">
+              <span className="font-mono text-xs font-bold opacity-60" style={{ color: s.color }}>{s.num}</span>
+              <span className="font-semibold text-sm text-white">{s.title}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-1.5 h-1.5 rounded-full" style={{ background: s.color }} />
+              <ChevronDown className="w-4 h-4 transition-transform duration-200"
+                           style={{ color: s.color, transform: tabOpen ? 'rotate(180deg)' : 'none' }} />
+            </div>
+          </button>
+          {tabOpen && (
+            <div className="mt-2 grid grid-cols-2 gap-2 p-3 rounded-xl"
+                 style={{ background: 'var(--bz-surface)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              {SVC.map((sv, i) => (
+                <button key={i} onClick={() => { setActive(i); setTabOpen(false); }}
+                        className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-left text-xs font-semibold transition-all"
+                        style={{
+                          background: active === i ? `${sv.color}15` : 'rgba(255,255,255,0.02)',
+                          border: `1px solid ${active === i ? `${sv.color}30` : 'rgba(255,255,255,0.05)'}`,
+                          color: active === i ? sv.color : 'var(--bz-muted)',
+                        }}>
+                  <span className="font-mono opacity-60 text-[10px]">{sv.num}</span>
+                  <span className="leading-tight">{sv.title}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* ── Desktop: horizontal scroll tab bar ── */}
+        <div className={`reveal d2 ${vis ? 'in' : ''} hidden md:flex gap-2 overflow-x-auto pb-2 mb-8 scrollbar-none`}
              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           {SVC.map((sv, i) => (
             <button key={i} onClick={() => setActive(i)}
@@ -173,9 +208,10 @@ export default function Services() {
 
         {/* Content panel */}
         <div className={`reveal d3 ${vis ? 'in' : ''}`} key={active}>
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+          {/* flex-col-reverse = image above text on mobile; grid restores desktop order */}
+          <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-8 lg:gap-12 items-start">
 
-            {/* Left: text */}
+            {/* Left: text (below image on mobile) */}
             <div className="space-y-6">
               {/* Service header */}
               <div>

@@ -59,27 +59,32 @@ export default function WhyUs() {
 
         {/* Image CTA strip */}
         <div className={`reveal d4 ${vis ? 'in' : ''} relative rounded-2xl overflow-hidden`}>
-          <div className="relative img-zoom overflow-hidden rounded-2xl h-52 lg:h-60">
+          <div className="relative overflow-hidden rounded-2xl" style={{ minHeight: '180px' }}>
+            {/* Background image — always fills the container */}
             <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=1200&auto=format&fit=crop&q=80"
-                 alt="Research collaboration" className="w-full h-full object-cover"
+                 alt="Research collaboration"
+                 className="absolute inset-0 w-full h-full object-cover"
                  onError={e => { e.target.parentElement.style.background = 'linear-gradient(135deg,#0C1228,#0D2045)'; e.target.style.display='none'; }} />
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(3,4,14,0.92) 0%, rgba(3,4,14,0.55) 60%, rgba(3,4,14,0.2) 100%)' }} />
-            <div className="absolute inset-0 flex items-center px-8 lg:px-12">
-              <div className="flex flex-col md:flex-row md:items-center justify-between w-full gap-6">
-                <div>
-                  <h3 className="font-display font-bold text-white text-xl lg:text-2xl mb-1.5">
-                    Ready to accelerate your clinical programme?
-                  </h3>
-                  <p className="text-bz-muted text-sm max-w-lg">
-                    Partner with StratifyBioZ for compliant, efficient, and patient-centric clinical development across India and APAC.
-                  </p>
-                </div>
-                <a href="#contact"
-                   onClick={e => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }}
-                   className="btn-primary inline-flex items-center gap-2 px-7 py-4 text-sm flex-shrink-0 whitespace-nowrap">
-                  Start the Conversation
-                </a>
+            {/* Overlay — heavier on mobile so text is always readable */}
+            <div className="absolute inset-0"
+                 style={{ background: 'linear-gradient(100deg, rgba(3,4,14,0.97) 0%, rgba(3,4,14,0.88) 55%, rgba(3,4,14,0.35) 100%)' }} />
+            {/* Content — natural flow on mobile, fills height on lg */}
+            <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between
+                            gap-5 px-6 py-7 lg:px-12 lg:py-0 lg:h-60">
+              <div className="max-w-lg">
+                <h3 className="font-display font-bold text-white text-base sm:text-xl lg:text-2xl leading-snug mb-2">
+                  Ready to accelerate your clinical programme?
+                </h3>
+                <p className="text-bz-muted text-xs sm:text-sm leading-relaxed">
+                  Partner with StratifyBioZ for compliant, efficient, and patient-centric
+                  clinical development across India and APAC.
+                </p>
               </div>
+              <a href="#contact"
+                 onClick={e => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }}
+                 className="btn-primary inline-flex items-center gap-2 px-6 py-3.5 lg:py-4 text-sm flex-shrink-0 self-start lg:self-center whitespace-nowrap">
+                Start the Conversation
+              </a>
             </div>
           </div>
         </div>
